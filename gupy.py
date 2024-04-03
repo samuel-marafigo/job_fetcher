@@ -119,14 +119,3 @@ class GupyJobFetcher:
                 return "Nenhuma vaga encontrada com os critérios selecionados"
         else:
             return "Falha ao buscar os dados das vagas"
-
-
-# # Example usage:
-# job_fetcher = GupyJobFetcher()
-# job_name = "desenvolvedor"
-# city = "Curitiba,São José dos Pinhais"
-# state = "Paraná"
-# workplaceType = "hybrid"
-# filtered_jobs_data = job_fetcher.callApi(job_name, city, state, workplaceType, today_only=False)
-#
-# print(filtered_jobs_data)
