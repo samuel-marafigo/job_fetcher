@@ -5,7 +5,7 @@ class SolidesJobFetcher:
 
     def __map_workplace_type(self, workplaceType):
         """
-        Maps English workplace type values to Portuguese translations.
+        Maps English workplace type values to Portuguese translations. Needed for this specific API.
 
         Args:
             workplaceType (str): The type of workplace.
@@ -41,9 +41,7 @@ class SolidesJobFetcher:
         }
         locations = []
         if cities and state:
-            # Convert state to abbreviation (you might need a more comprehensive mapping for other states)
             state_abbreviation = {"Paraná": "PR"}.get(state, state)
-            # Split cities string into a list, strip spaces, and append state abbreviation
             locations = [f"{city.strip()} - {state_abbreviation}" for city in cities.split(",")]
         if locations:
             params["locations"] = ' '.join(locations)
@@ -53,9 +51,8 @@ class SolidesJobFetcher:
         response = requests.get(url, params=params)
 
         if response.status_code == 200:
-            # Adjusted to correctly access nested "data"
             response_data = response.json().get("data", {})
-            job_items = response_data.get("data", [])  # Adjusted based on your description
+            job_items = response_data.get("data", []) 
             #print(job_items)
             return job_items
         else:
