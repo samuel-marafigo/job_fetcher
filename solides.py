@@ -98,8 +98,8 @@ class SolidesJobFetcher:
             "careerPageName": job.get("companyName"),
             "publishedDate": self.__parse_published_date(job.get("createdAt")),
             "workplaceType": job.get("jobType"),
-            "city": job.get("city", {}).get("name"),
-            "state": job.get("state", {}).get("name"),
+            "city": job.get("city", {}).get("name") if job.get("city") is not None else None, #solides may return no city or state
+            "state": job.get("state", {}).get("name") if job.get("city") is not None else None,
             "jobUrl": job.get("redirectLink")
         }
 
