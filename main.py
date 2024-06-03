@@ -2,6 +2,8 @@ from query import Query  # Import the custom Query class
 from gupy import GupyJobFetcher
 from solides import SolidesJobFetcher
 from file_operations import ExcelExporter
+import os
+from datetime import datetime
 
 def main():
     gupy_job_fetcher = GupyJobFetcher()
@@ -9,7 +11,9 @@ def main():
     exporter = ExcelExporter()
 
     # List of job titles you want to search
-    job_titles = ["farmaceutico", "estagiario", "estagio", "junior", "desenvolvedor", "developer"]
+    job_titles = ["estagiario", "estagio", "junior", "desenvolvedor", "developer", "java", "python", "react",
+                  "backend", "fullstack", "intern", "suporte", "support"
+                  ]
 
     # Iterate over each job title and fetch queries for each
     for job_title in job_titles:
@@ -23,11 +27,21 @@ def main():
             try:
                 solides_result = solides_job_fetcher.callApi(**current_query_dict)
                 gupy_result = gupy_job_fetcher.callApi(**current_query_dict)
-                print(solides_result)
-                print(gupy_result)
-                # Optionally save results to Excel
-                exporter.save_to_excel(solides_result, 'solides_' + job_name)
-                exporter.save_to_excel(gupy_result, 'gupy_' + job_name)
+
+                for result in solides_result:
+                    publish_date = datetime.strptime(result['publishedDate'], '%Y-%m-%d').date()
+                    folder_path = f"./Found jobs/Solides/{publish_date}"
+                    os.makedirs(folder_path, exist_ok=True)
+                    filename = f"{folder_path}/solides_{job_name}_{publish_date}.csv"
+                    exporter.save_to_csv([result], filename)
+
+                for result in gupy_result:
+                    publish_date = datetime.strptime(result['publishedDate'], '%Y-%m-%d').date()
+                    folder_path = f"./Found jobs/Gupy/{publish_date}"
+                    os.makedirs(folder_path, exist_ok=True)
+                    filename = f"{folder_path}/gupy_{job_name}_{publish_date}.csv"
+                    exporter.save_to_csv([result], filename)
+
             except TypeError as e:
                 print(f"Error in API call for {job_name}: {str(e)}")
             print()
