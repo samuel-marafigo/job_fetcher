@@ -49,11 +49,7 @@ if __name__ == "__main__":
 
     for job in job_titles:
         processes.append(Process(target=main, args=(job,)))
-        print("1")
-
 
     for process in processes:
         process.start()
-        print("1")
-
-
+  

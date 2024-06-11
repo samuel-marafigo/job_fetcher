@@ -59,16 +59,16 @@ class ExcelExporter:
         new_df = pd.DataFrame(data)
 
         if os.path.exists(file_name):
-            existing_df = pd.read_csv(file_name, sep=';', encoding='latin-1')
+            existing_df = pd.read_csv(file_name, sep=',', encoding='latin-1')
             combined_df = pd.concat([existing_df, new_df], ignore_index=True).drop_duplicates(keep='first')
         else:
             combined_df = new_df
 
         try:
-            combined_df.to_csv(file_name, index=False, sep=';', encoding='latin-1')
+            combined_df.to_csv(file_name, index=False, sep=',', encoding='latin-1')
         except UnicodeEncodeError:
             try:
-                combined_df.to_csv(file_name, index=False, sep=';', encoding='utf-8')
+                combined_df.to_csv(file_name, index=False, sep=',', encoding='utf-8')
             except UnicodeEncodeError:
-                combined_df.to_csv(file_name, index=False, sep=';', encoding='utf-16')
+                combined_df.to_csv(file_name, index=False, sep=',', encoding='utf-16')
         return f"Data saved to '{file_name}' successfully."
