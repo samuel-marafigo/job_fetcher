@@ -57,7 +57,6 @@ class GupyJobFetcher:
                     filtered_data.append(self.__extract_job_info(job))
             else:
                 filtered_data.append(self.__extract_job_info(job))
-
         return filtered_data
 
     def __extract_job_info(self, job):
@@ -92,8 +91,6 @@ class GupyJobFetcher:
         """
         if published_date_str:
             return published_date_str.split("T")[0]
-        else:
-            return None
 
     def callApi(self, job_name, city=None, state=None, workplaceType=None, today_only=False):
         """
@@ -112,10 +109,6 @@ class GupyJobFetcher:
         """
         jobs_data = self.fetch_jobs_data(job_name, city, state, workplaceType)
         if jobs_data:
-            filtered_jobs_data = self.__filter_job_data(jobs_data, today_only)
-            if filtered_jobs_data:
-                return filtered_jobs_data
-            else:
-                return "Nenhuma vaga encontrada com os critérios selecionados"
-        else:
-            return "Falha ao buscar os dados das vagas"
+            return self.__filter_job_data(jobs_data, today_only)
+            
+       
